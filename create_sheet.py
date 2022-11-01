@@ -11,6 +11,6 @@ def create_sheet():
         cell = sheet.cell(row=1, column=col)
         cell.value = parameter
         col += 1
-    wb.save('Testas.xlsx')
+    wb.save('Duome.xlsx')
 
 create_sheet()
