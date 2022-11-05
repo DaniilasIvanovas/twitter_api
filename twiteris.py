@@ -1,7 +1,7 @@
 import openpyxl
 import tweepy
 import configparser
-
+import json
 # Get keys
 configas = configparser.ConfigParser()
 configas.read('info.ini')
@@ -19,21 +19,26 @@ aut.set_access_token(access_token, access_token_secret)
 
 # Query
 
-query = 'is:retweet'
-
+query = 'word -is:reply -is:retweet'
 api = tweepy.API(aut)
-tweets = api.search_tweets(q=query, count=10)
+tweets = api.search_tweets(q=query, count=100)
 
 
 wb = openpyxl.load_workbook('Duomen.xlsx')  # Load workbook
 ws = wb.active  # Select first sheet
 row = 2
-col = 1
+col = 'ABCDEFGHIJKLMNOPRSTUVZ'
+keys = ['id_str', 'text']
+
+
+def get_info_from_tweet(tweet_data):
+    info = [tweet_data['id_str'], tweet_data['lang'], len(tweet_data['text']), len(tweet_data['entities']['hashtags']),
+            len(tweet_data['entities']['symbols']), len(tweet_data['entities']['user_mentions']), len(tweet_data['entities']['urls'])]
+    return info
+
 
 for tweet in tweets:
-    cell = ws.cell(row=row, column=col)
-    cell.value = tweet.user.id_str
-    row += 1
+    ws.append(get_info_from_tweet(tweet._json))
+
 
 wb.save('Duomen.xlsx')
-
