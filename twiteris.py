@@ -26,9 +26,6 @@ tweets = api.search_tweets(q=query, count=100)
 
 wb = openpyxl.load_workbook('Duomen.xlsx')  # Load workbook
 ws = wb.active  # Select first sheet
-row = 2
-col = 'ABCDEFGHIJKLMNOPRSTUVZ'
-keys = ['id_str', 'text']
 
 
 def get_info_from_tweet(tweet_data):
